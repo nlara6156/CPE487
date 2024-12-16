@@ -55,6 +55,8 @@ _This code originated from the `pong.xdc` file in Lab 6
 
 ![image](Images/Modified_Agario_Constraint.png)
 
+- Added the button BTNU and BTND to allow the ball to move up and down (Shown on line 23 and 24)
+
 ### `agario.vhd`
 
 **Initial:**
