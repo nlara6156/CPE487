@@ -7,13 +7,13 @@ Playing:
   - Use BTNU to move up, BTND to move down, BTNR to move right, and BTNL to move left.
 Scoring: When the ball has reached a certain size the game will end.
 
-##Required Attachments
+## Required Attachments
 For game play, you will need the following
 - Nexys A7-100T Board
 - VGA to HDMI Adapter
 - Monitor
 
-##Steps to Run
+## Steps to Run
 Download the following files from this repository onto your computer
 - `ball.vhd`
 - `clk_wiz_0_clk_wiz.vhd`
