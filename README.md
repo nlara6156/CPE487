@@ -13,10 +13,15 @@ Scoring: When the ball has reached a certain size the game will end.
 ## Required Attachments
 For game play, you will need the following
 - Nexys A7-100T Board
+  
 ![Nexys Board](Images/NexysA7.jpg)
+
 - VGA to HDMI Adapter
+  
 ![Adapter](Images/VGA_HDMI.jpg)
+
 - Monitor
+  
 ![Monitor](Images/TV_image.jpg)
 
 ## Steps to Run
