@@ -319,6 +319,7 @@ BEGIN
 - To move right if the btnr button is pressed and the x position is less than 800 then it can move left.
 - To move up it checks if the btnu button is pushed and the y position is over 0 it can move up.
 - To move down it checks if the btnd putton is pushed and the y position is less than 600 it can move down.
+- If the condition is met it adds or subtracts to the ball's position by 10
   
 ### `ball.vhd`
 
