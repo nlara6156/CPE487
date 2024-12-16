@@ -364,6 +364,8 @@ ARCHITECTURE Behavioral OF ball IS
     SIGNAL ps_state, pr_state, nx_state : state;
 ```
 - game_on, balls_on_screen, pos_x, pos_y, ball_x0, ball_y0,..., ball_x12, ball_y12, ball_on, size_change, bsize, counter, clk_div, collision, flag, reset are newly created or modified signals.
+- ENTER_GAME, SERVE, BALL_COLL, and END_GAME are state names used in the FSM.
+- ps_state, pr_state, and nx_state are the states used in the FSM. 
 - game_on was modified to test if each individual ball is in play.
 - balls_on_screen is a flag to determine if the balls should appear on the screen.
 - pos_x, pos_y are used in the ball position randomization.
@@ -408,7 +410,8 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
 - This process (renamed to mainballdraw) is kept the same from lab 6.
 ```
 -- process to draw each random ball
-    randballdraw : PROCESS (ball_x0, ball_x1, ball_x2, ball_x3, ball_x4, ball_x5, ball_x6, ball_x7, ball_x8, ball_y0, ball_y1, ball_y2, ball_y3, ball_y4, ball_y5, ball_y6, ball_y7, ball_y8, pixel_row, pixel_col) IS 
+    randballdraw : PROCESS (ball_x0, ball_x1, ball_x2, ball_x3, ball_x4, ball_x5, ball_x6, ball_x7, ball_x8, ball_x9, ball_x10, ball_x11, ball_x12, ball_y0, ball_y1, ball_y2, ball_y3, ball_y4, ball_y5, ball_y6, ball_y7, ball_y8, ball_y9, 
+                            ball_y10, ball_y11, ball_y12, pixel_row, pixel_col) IS 
     BEGIN
         IF balls_on_screen(0) = '1' THEN
            IF ((CONV_INTEGER(pixel_col) - CONV_INTEGER(ball_x0))**2 + (CONV_INTEGER(pixel_row) - CONV_INTEGER(ball_y0))**2) <= (bsize*bsize) THEN
@@ -469,6 +472,7 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
 - Tests if the game is being restarted, and turns on reset as a result.
 - Resets the timer only if reset is 1, then turns reset back to 0.
 - Only runs the counter if flag is 1 (flag becomes 1 if switch 0 is on).
+### FSM Logic
 ```
     -- process to start game (i.e., once every vsync pulse)
     mball : PROCESS
@@ -510,12 +514,21 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
                     size_change <= "00000000"; -- reset score
                     nx_state <= ENTER_GAME; -- continue to next state
 ```
+- State 1: SERVE - initializes or restarts the game.
+- Condition tests for the BTNC button being pressed.
+- Sets game_on(0) = '0' for restarting purposes.
+- Initializes the 13 random balls to their starting positions.
+- Resets the score to 0.
+- Sets the next state to ENTER_GAME.
+  
 ```
                     IF game_on(0) = '0' THEN -- if game is restarted
                        game_on(0) <= '1'; -- put main ball on screen
                        mainbsize <= 8; -- reset ball to original size
                     END IF;
 ```
+- Tests for the game restarting and sets game_on(0) ='1' which puts the main ball on the screen.
+- Resets the main ball size to its original size.
 ```
                     IF sw(0) = '1' THEN -- if switch 0 is on
                        flag <= '1'; -- set flag to determine whether timer runs
@@ -523,9 +536,12 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
                        flag <= '0';
                     END IF;
 ```
+- Tests if switch 0 is on or off.
+- If the switch is on, set flag = '1' (used to determine whether the timer runs).
 ```
                 -- condition to allow balls to reappear after disappearing
-                ELSIF (game_on(0) = '1' AND game_on(1) = '1' AND game_on(2) = '1' AND game_on(3) = '1' AND game_on(4) = '1' AND game_on(5) ='1' AND game_on(6) ='1' AND game_on(7) ='1' AND game_on(8) ='1' AND game_on(9) ='1') THEN
+                ELSIF (game_on(0) = '1' AND game_on(1) = '1' AND game_on(2) = '1' AND game_on(3) = '1' AND game_on(4) = '1' AND game_on(5) ='1' AND game_on(6) ='1' AND game_on(7) ='1' AND game_on(8) ='1' AND game_on(9) ='1' AND 
+                       game_on(10) ='1' AND game_on(11) ='1' AND game_on(12) ='1' AND game_on(13) ='1') THEN
                     balls_on_screen(0) <= '1';
                     balls_on_screen(1) <= '1';
                     balls_on_screen(2) <= '1';
@@ -544,6 +560,7 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
                     nx_state <= ENTER_GAME; -- if balls are not in play, continue to this state to put them in play
                 END IF;
 ```
+- This condition ensures that all balls are shown on the screen at the same time if all the balls are in play.
 ```
              -- conditions to put balls in play and make them appear on screen
              IF (game_on(1) = '0' AND balls_on_screen(0) = '0' AND ps_state = BALL_COLL) THEN
@@ -552,6 +569,8 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
                     nx_state <= BALL_COLL;
              END IF;
 ```
+- This condition puts the balls in play if they are not.
+- Repeated 13 times for each individual ball.
 ```
 WHEN ENTER_GAME => -- state to ensure balls are put into play 
              IF start_game = '0' THEN
@@ -573,6 +592,9 @@ WHEN ENTER_GAME => -- state to ensure balls are put into play
                  nx_state <= ENTER_GAME; -- returns to this state until balls are in play
              END IF;
 ```
+- State 2: ENTER_GAME - ensures balls are put into play.
+- Condition tests if the game is already started (the BTNC button is not being pressed) and puts the balls in play.
+- Sets the next state to state 1 if the balls are in play or returns to state 2 until the balls are in play. 
 ```
 WHEN BALL_COLL => 
          -- conditions to test for main ball collision with other balls
@@ -600,17 +622,25 @@ WHEN BALL_COLL =>
                            ps_state <= pr_state;
                            nx_state <= SERVE;
 ```
+- State 3: BALL_COLL - used for main gameplay
+- Collision is a flag to ensure that ball collision is continuously being tested and that each collision is only worth 1 point.
+- Inner conditions test for the main ball collision with each individual ball.
+- If collision occurs, the random ball is removed from the screen, collision is switched to 1, the ball size and score increases or decreaes (depending on what ball you hit), and the next state is set to state 1.
+- These conditions are repeated 13 times for every random ball.
 ```
              IF nx_state = SERVE THEN
                     collision <= '0'; -- switch flag back so collision is continuously tested
              END IF;
 ```
+- Since we set the next state to SERVE as seen above, once that happens the collision flag is set back to 0. 
 ```
              -- change ball position after collision
              IF game_on(1) = '0' THEN
                 ball_x0 <= CONV_STD_LOGIC_VECTOR(CONV_INTEGER(pos_x), 11);
                 ball_y0 <= CONV_STD_LOGIC_VECTOR(CONV_INTEGER(pos_y), 11);
 ```
+- This condition is used to randomize each ball position when they respawn.
+- Repeated 13 times for every random ball.
 ```
          IF mainbsize > 150 OR mainbsize < 8 OR counter = 0 THEN
             ps_state <= pr_state;
@@ -620,6 +650,8 @@ WHEN BALL_COLL =>
             nx_state <= SERVE;
          END IF;
 ```
+- Condition to end the game.
+- Tests if the ball size is above or below a certain threshold or if the timer runs out and becomes 0.
 ```
 WHEN END_GAME =>
              balls_on_screen <= "0000000000000"; -- turn off all balls except main ball
@@ -641,6 +673,9 @@ WHEN END_GAME =>
                 nx_state <= ENTER_GAME; 
              END IF;
 ```
+- State 4: END_GAME - ends the game
+- Turns off all of the random balls and takes them out of play but keeps the main ball in play.
+- Condition tests if the BTNC button is being pressed (the game is being reset) and sets the next state to ENTER_GAME if true. 
 ## Process Summary 
 
 ### Responsibilities
