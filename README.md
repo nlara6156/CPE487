@@ -5,6 +5,7 @@ Goal: Grow your main ball size.
 Playing: 
   - Use BTNC to start the game.
   - Use BTNU to move up, BTND to move down, BTNR to move right, and BTNL to move left.
+    
 Scoring: When the ball has reached a certain size the game will end.
 
 ## Required Attachments
@@ -35,6 +36,7 @@ Once downloaded, follow these steps:
    - 'Open Target'
    - 'Auto Connect'
    - 'Program Device'
+     
 9. Push the BTNC button to start the game
 
 ## Inputs and Outputs
@@ -56,6 +58,7 @@ Nadia Lara:
 
 - Generating multiple balls in "random" places
     - 
+
 - Having the main ball increase when coming in contact with the other balls
     - The main ball score will not increase if not completely hovering the other ball
 
