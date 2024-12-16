@@ -200,6 +200,8 @@ set_property -dict {PACKAGE_PIN L16 IOSTANDARD LVCMOS33} [get_ports {sw[1]}]
 
 ### `agario.vhd`
 
+_This code originated from the bat_n_ball.vhd file in Lab 6_
+
 **Initial:**
 
 ```
