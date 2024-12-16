@@ -52,7 +52,7 @@ Once downloaded, follow these steps:
 9. Push the BTNC button to start the game
 
 ## Inputs and Outputs
-Inputs and Outputs in top level file `agario.vhd`
+### Inputs and Outputs in top level file `agario.vhd`
 ```
 ENTITY agario IS
     PORT (
@@ -73,19 +73,19 @@ ENTITY agario IS
     ); 
 END agario
 ```
-### Inputs
+#### Inputs
 - clk_in: System clock
 - BTNL: This input corresponds to the button on the left so that the ball can move left (Input port P17)
 - BTNR: This input corresponds to the button on the right so that the ball can move right (Input port M17)
 - BTND: This input corresponds to the bottom button so that the ball can move down (Input port P18)
 - BTNU: This input corresponds to the top button so that the ball can move up (Input port M18)
 - BTN0: This input corresponds to the middle button so that the game can start (Input port N17)
-### Outputs
+#### Outputs
 - SEG7_anode: Corresponds to the 8 different LED segments that will be lit up
 - SEG7_seg: Determines what will be displayed on each anode
 - VGA_red, VGA_green, VGA_blue, VGA_hsync, VGA_vsync: Display the code and color on monitor
 
-Inputs and Outputs in `ball.vhd`
+### Inputs and Outputs in `ball.vhd`
 ```
 ENTITY ball IS
     PORT (
@@ -106,7 +106,7 @@ ENTITY ball IS
     );
 END ball;
 ```
-### Inputs
+#### Inputs
 - clk: Mapped system clock in vector form 
 - clk_in: Mapped system clock
 - v_sync: Syncs code to VGA monitor
@@ -114,11 +114,11 @@ END ball;
 - mainball_x, mainball_y: x and y coordinates of the main ball
 - start_game: Initiates serve
 - sw: Condition for board switch
-### Outputs
+#### Outputs
 - score, timer: Mapped onto display to show the score and countdown timer on the board
 - red, green, blue: Colors to display on the monitor
 
-Inputs and Outputs in `leddec16.vhd`
+### Inputs and Outputs in `leddec16.vhd`
 ```
 ENTITY leddec16 IS
 	PORT (
@@ -129,11 +129,11 @@ ENTITY leddec16 IS
 		seg : OUT STD_LOGIC_VECTOR (6 DOWNTO 0)); -- segment code for current digit
 END leddec16;
 ```
-### Inputs
+#### Inputs
 - dig: Determines which digit to display on the board
 - data1, data2: 2 separate displays for 2 different 2-digit datasets
 - anode: Determines which anode to turn on
-### Outputs
+#### Outputs
 - seg: Segment code for current digit
 ## Modifications
 ### `leddec16.vhd`
