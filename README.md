@@ -49,7 +49,7 @@ _This code originated from the `pong.xdc` file in Lab 6
 
 ![image](Images/Initial_Agario_Constraint.png)
 
-**Modified**
+**Modified:**
 
 ![image](Images/Modified_Agario_Constraint.png)
 
@@ -57,13 +57,13 @@ _This code originated from the `pong.xdc` file in Lab 6
 
 **Initial:**
 
-**Modified**
+**Modified:**
 
 ### `ball.vhd`
 
 **Initial:**
 
-**Modified**
+**Modified:**
 
 
 ## Process Summary 
