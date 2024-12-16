@@ -318,8 +318,69 @@ BEGIN
 
 **Initial:**
 
-**Modified:**
+```
+ CONSTANT bsize : INTEGER := 8; -- ball size in pixels
+    CONSTANT bat_w : INTEGER := 20; -- bat width in pixels
+    CONSTANT bat_h : INTEGER := 3; -- bat height in pixels
+    -- distance ball moves each frame
+    CONSTANT ball_speed : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR (6, 11);
+    SIGNAL ball_on : STD_LOGIC; -- indicates whether ball is at current pixel position
+    SIGNAL bat_on : STD_LOGIC; -- indicates whether bat at over current pixel position
+    SIGNAL game_on : STD_LOGIC := '0'; -- indicates whether ball is in play
+    -- current ball position - intitialized to center of screen
+    SIGNAL ball_x : STD_LOGIC_VECTOR(10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(400, 11);
+    SIGNAL ball_y : STD_LOGIC_VECTOR(10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(300, 11);
+    -- bat vertical position
+    CONSTANT bat_y : STD_LOGIC_VECTOR(10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(500, 11);
+    -- current ball motion - initialized to (+ ball_speed) pixels/frame in both X and Y directions
+    SIGNAL ball_x_motion, ball_y_motion : STD_LOGIC_VECTOR(10 DOWNTO 0) := ball_speed;
+```
 
+**Modified:**
+```
+ SIGNAL mainbsize : INTEGER := 8; -- ball size in pixels
+    SIGNAL mainball_on : STD_LOGIC; -- indicates whether ball is at current pixel position
+    SIGNAL game_on : STD_LOGIC_VECTOR (13 DOWNTO 0) := "00000000000000"; -- indicates whether balls are in play
+    SIGNAL balls_on_screen : STD_LOGIC_VECTOR (12 DOWNTO 0):= (OTHERS => '0');
+    SIGNAL pos_x, pos_y : STD_LOGIC_VECTOR (10 DOWNTO 0);
+    -- random balls starting x positions
+    SIGNAL ball_x0 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(385, 11);
+    SIGNAL ball_x1 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(568, 11);
+    SIGNAL ball_x2 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(10, 11);
+    SIGNAL ball_x3 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(45, 11);
+    SIGNAL ball_x4 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(155, 11);
+    SIGNAL ball_x5 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(750, 11);
+    SIGNAL ball_x6 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(375, 11);
+    SIGNAL ball_x7 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(58, 11);
+    SIGNAL ball_x8 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(670, 11);
+    SIGNAL ball_x9 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(163, 11);
+    SIGNAL ball_x10 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(483, 11);
+    SIGNAL ball_x11 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(262, 11);
+    SIGNAL ball_x12 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(582, 11);
+    -- random balls starting y positions
+    SIGNAL ball_y0 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(45, 11);
+    SIGNAL ball_y1 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(90, 11);
+    SIGNAL ball_y2 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(135, 11);
+    SIGNAL ball_y3 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(180, 11);
+    SIGNAL ball_y4 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(225, 11);
+    SIGNAL ball_y5 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(270, 11);
+    SIGNAL ball_y6 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(315, 11);
+    SIGNAL ball_y7 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(360, 11);
+    SIGNAL ball_y8 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(405, 11);
+    SIGNAL ball_y9 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(450, 11);
+    SIGNAL ball_y10 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(495, 11);
+    SIGNAL ball_y11 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(540, 11);
+    SIGNAL ball_y12 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(585, 11);
+    SIGNAL ball_on : STD_LOGIC_VECTOR (12 DOWNTO 0) := (OTHERS => '0'); --indicates whether each ball is at current pixel position
+    SIGNAL size_change : STD_LOGIC_VECTOR (7 DOWNTO 0);
+    SIGNAL bsize : INTEGER := 8;
+    SIGNAL counter : STD_LOGIC_VECTOR (7 DOWNTO 0);
+    SIGNAL clk_div : STD_LOGIC_VECTOR (26 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL collision, flag, reset : STD_LOGIC;
+    -- used for making random balls respawn
+    TYPE state IS (ENTER_GAME, SERVE, BALL_COLL, END_GAME);
+    SIGNAL ps_state, pr_state, nx_state : state;
+```
 
 ## Process Summary 
 
