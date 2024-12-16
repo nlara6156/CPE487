@@ -41,6 +41,18 @@ Once downloaded, follow these steps:
 
 ## Inputs and Outputs
 ## Modifications
+
+### `agario.xdc`
+_This code originated from the `pong.xdc` file in Lab 6
+
+**Initial:**
+
+![image](Initial_Agario_Constraint.png)
+
+**Modified**
+
+![image](Modified_Agario_Constraint.png)
+
 ## Process Summary 
 
 ### Responsibilities
