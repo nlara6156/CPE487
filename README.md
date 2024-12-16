@@ -42,7 +42,23 @@ Once downloaded, follow these steps:
 ## Process Summary 
 Components:
 
+### Responsibilities
+
 Rebecca Kaspar:
 - Contributed to GitHub repository
+- Added the small ball randomization
+
 Nadia Lara:
 - Contributed to GitHub repository
+- Added score counter 
+
+### Difficulties
+
+- Generating multiple balls in "random" places
+    - 
+- Having the main ball increase when coming in contact with the other balls
+    - The main ball score will not increase if not completely hovering the other ball
+
+### Timeline
+
+The project was completed in the last week with equal work being done by both parties. 
