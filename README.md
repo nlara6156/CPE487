@@ -473,6 +473,7 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
 - Resets the timer only if reset is 1, then turns reset back to 0.
 - Only runs the counter if flag is 1 (flag becomes 1 if switch 0 is on).
 ### FSM Logic
+Credit: Collect project from Spring 2024
 ```
     -- process to start game (i.e., once every vsync pulse)
     mball : PROCESS
@@ -677,6 +678,9 @@ WHEN END_GAME =>
 - Turns off all of the random balls and takes them out of play but keeps the main ball in play.
 - Condition tests if the BTNC button is being pressed (the game is being reset) and sets the next state to ENTER_GAME if true. 
 ## Process Summary 
+
+### FSM Logic Diagram
+![FSM_Logic](https://github.com/user-attachments/assets/7e92f929-6c32-408a-be0c-cad1c5bdae4d)
 
 ### Responsibilities
 
