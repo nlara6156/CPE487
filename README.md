@@ -42,7 +42,6 @@ Once downloaded, follow these steps:
 ## Inputs and Outputs
 ## Modifications
 ## Process Summary 
-Components:
 
 ### Responsibilities
 
@@ -56,8 +55,8 @@ Nadia Lara:
 
 ### Difficulties
 
-- Generating multiple balls in "random" places
-    - 
+- Generating multiple balls in 'random' places
+  
 
 - Having the main ball increase when coming in contact with the other balls
     - The main ball score will not increase if not completely hovering the other ball
