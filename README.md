@@ -45,7 +45,7 @@ Once downloaded, follow these steps:
 ## Modifications
 
 ### `agario.xdc`
-_This code originated from the `pong.xdc` file in Lab 6
+_This code originated from the `pong.xdc` file in Lab 6_
 
 **Initial:**
 
