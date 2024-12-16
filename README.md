@@ -34,7 +34,7 @@ Download the following files from this repository onto your computer
 - `agario.xdc`
 - `agario.vhd`
 
-- Module Hierarchy
+### Module Hierarchy
 ![Module Hierarchy](https://github.com/user-attachments/assets/88511ae5-e2a5-46f7-967d-9ba096ce795e) 
 Once downloaded, follow these steps:
 1. Create a new project on Vivado
@@ -55,100 +55,112 @@ Once downloaded, follow these steps:
 Inputs and Outputs in top level file `agario.vhd`
 ```
 ENTITY agario IS
-
     PORT (
-
         clk_in : IN STD_LOGIC; -- system clock
-
         VGA_red : OUT STD_LOGIC_VECTOR (3 DOWNTO 0); -- VGA outputs
-
         VGA_green : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
-
         VGA_blue : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
-
         VGA_hsync : OUT STD_LOGIC;
-
         VGA_vsync : OUT STD_LOGIC;
-
         btnl : IN STD_LOGIC;
-
         btnr : IN STD_LOGIC;
-
         btnd : IN STD_LOGIC;
-
         btnu : IN STD_LOGIC;
-
         btn0 : IN STD_LOGIC;
-
+        sw : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
         SEG7_anode : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- anodes of four 7-seg displays
-
         SEG7_seg : OUT STD_LOGIC_VECTOR (6 DOWNTO 0)
-
-    );
-
-END agario;
+    ); 
+END agario
 ```
-
-- clk_in : This input is the system clock
-- VGA_red, VGA_green, VGA_blue, VGA_hsync, VGA_vsync: These are the outputes to display the code and color
+### Inputs
+- clk_in: System clock
 - BTNL: This input corresponds to the button on the left so that the ball can move left (Input port P17)
 - BTNR: This input corresponds to the button on the right so that the ball can move right (Input port M17)
 - BTND: This input corresponds to the bottom button so that the ball can move down (Input port P18)
 - BTNU: This input corresponds to the top button so that the ball can move up (Input port M18)
 - BTN0: This input corresponds to the middle button so that the game can start (Input port N17)
-- SEG7_anode: This output corresponds to the 8 different LED segments that will be lit up
-- SEG7_seg: This output determines what will be displayed on each anode 
+### Outputs
+- SEG7_anode: Corresponds to the 8 different LED segments that will be lit up
+- SEG7_seg: Determines what will be displayed on each anode
+- VGA_red, VGA_green, VGA_blue, VGA_hsync, VGA_vsync: Display the code and color on monitor
 
+Inputs and Outputs in `ball.vhd`
+```
+ENTITY ball IS
+    PORT (
+        clk : IN STD_LOGIC_VECTOR (20 DOWNTO 0); -- system clock in vector form
+        clk_in : IN STD_LOGIC; -- system clock
+        v_sync : IN STD_LOGIC;
+        pixel_row : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
+        pixel_col : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
+        mainball_x : IN STD_LOGIC_VECTOR(10 DOWNTO 0); -- main ball x position
+        mainball_y : IN STD_LOGIC_VECTOR(10 DOWNTO 0); -- main ball y position
+        start_game : IN STD_LOGIC; -- initiates serve
+        sw : IN STD_LOGIC_VECTOR (1 DOWNTO 0); -- condition for switch
+        score : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- display score
+        timer : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- display timer
+        red : OUT STD_LOGIC;
+        green : OUT STD_LOGIC;
+        blue : OUT STD_LOGIC
+    );
+END ball;
+```
+### Inputs
+- clk: Mapped system clock in vector form 
+- clk_in: Mapped system clock
+- v_sync: Syncs code to VGA monitor
+- pixel_row, pixel_col: Row or column position
+- mainball_x, mainball_y: x and y coordinates of the main ball
+- start_game: Initiates serve
+- sw: Condition for board switch
+### Outputs
+- score, timer: Mapped onto display to show the score and countdown timer on the board
+- red, green, blue: Colors to display on the monitor
+
+Inputs and Outputs in `leddec16.vhd`
+```
+ENTITY leddec16 IS
+	PORT (
+		dig : IN STD_LOGIC_VECTOR (2 DOWNTO 0); -- which digit to currently display
+		data1 : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+		data2 : IN STD_LOGIC_VECTOR (7 DOWNTO 0); 
+		anode : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- which anode to turn on
+		seg : OUT STD_LOGIC_VECTOR (6 DOWNTO 0)); -- segment code for current digit
+END leddec16;
+```
+### Inputs
+- dig: Determines which digit to display on the board
+- data1, data2: 2 separate displays for 2 different 2-digit datasets
+- anode: Determines which anode to turn on
+### Outputs
+- seg: Segment code for current digit
 ## Modifications
-
+### `leddec16.vhd`
+_This code originated from the `leddec16.vhd` file in Lab 6_
+```
+ARCHITECTURE Behavioral OF leddec16 IS
+	SIGNAL data4 : STD_LOGIC_VECTOR (3 DOWNTO 0); -- binary value of current digit
+BEGIN
+	-- Select digit data to be displayed in this mpx period
+	data4 <= data2(3 DOWNTO 0) WHEN dig = "000" ELSE -- digit 0
+	         data2(7 DOWNTO 4) WHEN dig = "001" ELSE -- digit 1
+	         data1(3 DOWNTO 0) WHEN dig = "110" ELSE -- digit 2
+	         data1(7 DOWNTO 4) WHEN dig = "111"; -- digit 3
+```
+```
+anode <= "11111110" WHEN dig = "000" ELSE -- 0
+         "11111101" WHEN dig = "001" ELSE -- 1
+--	 "11111011" WHEN dig = "010" ELSE -- 2
+--       "11110111" WHEN dig = "011" ELSE -- 3
+--	 "11101111" WHEN dig = "100" ELSE -- 4
+--	 "11011111" WHEN dig = "101" ELSE -- 5
+         "10111111" WHEN dig = "110" ELSE -- 6
+         "01111111" WHEN dig = "111" ELSE -- 7
+         "11111111";
+```
 ### `agario.xdc`
 _This code originated from the `pong.xdc` file in Lab 6_
-
-**Initial:**
-```
-set_property -dict { PACKAGE_PIN E3 IOSTANDARD LVCMOS33 } [get_ports {clk_in}];
-create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {clk_in}];
-
-set_property -dict { PACKAGE_PIN B11 IOSTANDARD LVCMOS33 } [get_ports { VGA_hsync }]; #IO_L4P_T0_15 Sch=vga_hs
-set_property -dict { PACKAGE_PIN B12 IOSTANDARD LVCMOS33 } [get_ports { VGA_vsync }]; #IO_L3N_T0_DQS_AD1N_15 Sch=vga_vs
-
-set_property -dict { PACKAGE_PIN B7 IOSTANDARD LVCMOS33 } [get_ports { VGA_blue[0] }]; #IO_L2P_T0_AD12P_35 Sch=vga_b[0]
-set_property -dict { PACKAGE_PIN C7 IOSTANDARD LVCMOS33 } [get_ports { VGA_blue[1] }]; #IO_L4N_T0_35 Sch=vga_b[1]
-set_property -dict { PACKAGE_PIN D7 IOSTANDARD LVCMOS33 } [get_ports { VGA_blue[2] }];
-set_property -dict { PACKAGE_PIN D8 IOSTANDARD LVCMOS33 } [get_ports { VGA_blue[3] }];
-set_property -dict { PACKAGE_PIN A3 IOSTANDARD LVCMOS33 } [get_ports { VGA_red[0] }]; #IO_L8N_T1_AD14N_35 Sch=vga_r[0]
-set_property -dict { PACKAGE_PIN B4 IOSTANDARD LVCMOS33 } [get_ports { VGA_red[1] }]; #IO_L7N_T1_AD6N_35 Sch=vga_r[1]
-set_property -dict { PACKAGE_PIN C5 IOSTANDARD LVCMOS33 } [get_ports { VGA_red[2] }]; #IO_L1N_T0_AD4N_35 Sch=vga_r[2]
-set_property -dict { PACKAGE_PIN A4 IOSTANDARD LVCMOS33 } [get_ports { VGA_red[3] }];
-set_property -dict { PACKAGE_PIN C6 IOSTANDARD LVCMOS33 } [get_ports { VGA_green[0] }]; #IO_L1P_T0_AD4P_35 Sch=vga_g[0]
-set_property -dict { PACKAGE_PIN A5 IOSTANDARD LVCMOS33 } [get_ports { VGA_green[1] }]; #IO_L3N_T0_DQS_AD5N_35 Sch=vga_g[1]
-set_property -dict { PACKAGE_PIN B6 IOSTANDARD LVCMOS33 } [get_ports { VGA_green[2] }]; #IO_L2N_T0_AD12N_35 Sch=vga_g[2]
-set_property -dict { PACKAGE_PIN A6 IOSTANDARD LVCMOS33 } [get_ports { VGA_green[3] }];
-
-set_property -dict { PACKAGE_PIN N17 IOSTANDARD LVCMOS33 } [get_ports { btn0 }]; #IO_L9P_T1_DQS_14 Sch=btnc
-set_property -dict { PACKAGE_PIN P17 IOSTANDARD LVCMOS33 } [get_ports { btnl }]; #IO_L12P_T1_MRCC_14 Sch=btnl
-set_property -dict { PACKAGE_PIN M17 IOSTANDARD LVCMOS33 } [get_ports { btnr }]; #IO_L10N_T1_D15_14 Sch=btnr
-
-set_property -dict {PACKAGE_PIN L18 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[0]}]
-set_property -dict {PACKAGE_PIN T11 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[1]}]
-set_property -dict {PACKAGE_PIN P15 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[2]}]
-set_property -dict {PACKAGE_PIN K13 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[3]}]
-set_property -dict {PACKAGE_PIN K16 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[4]}]
-set_property -dict {PACKAGE_PIN R10 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[5]}]
-set_property -dict {PACKAGE_PIN T10 IOSTANDARD LVCMOS33} [get_ports {SEG7_seg[6]}]
-
-set_property -dict {PACKAGE_PIN U13 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[7]}]
-set_property -dict {PACKAGE_PIN K2 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[6]}]
-set_property -dict {PACKAGE_PIN T14 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[5]}]
-set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[4]}]
-set_property -dict {PACKAGE_PIN J14 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[3]}]
-set_property -dict {PACKAGE_PIN T9 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[2]}]
-set_property -dict {PACKAGE_PIN J18 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[1]}]
-set_property -dict {PACKAGE_PIN J17 IOSTANDARD LVCMOS33} [get_ports {SEG7_anode[0]}]
-```
-
-
-**Modified:**
 
 ```
 set_property -dict { PACKAGE_PIN E3 IOSTANDARD LVCMOS33 } [get_ports {clk_in}];
@@ -197,35 +209,11 @@ set_property -dict {PACKAGE_PIN J15 IOSTANDARD LVCMOS33} [get_ports {sw[0]}]
 set_property -dict {PACKAGE_PIN L16 IOSTANDARD LVCMOS33} [get_ports {sw[1]}]
 ```
 
-- Added the button BTNU and BTND to allow the ball to move up and down (Shown on line 23 and 24)
+- Added the buttons BTNU and BTND to allow the ball to move up and down (Shown on line 23 and 24)
 - Added the switches (Shown on line 41 and 42)
 
 ### `agario.vhd`
-
 _This code originated from the bat_n_ball.vhd file in Lab 6_
-
-**Initial:**
-
-```
-ENTITY pong IS
-    PORT (
-        clk_in : IN STD_LOGIC; -- system clock
-        VGA_red : OUT STD_LOGIC_VECTOR (3 DOWNTO 0); -- VGA outputs
-        VGA_green : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
-        VGA_blue : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
-        VGA_hsync : OUT STD_LOGIC;
-        VGA_vsync : OUT STD_LOGIC;
-        btnl : IN STD_LOGIC;
-        btnr : IN STD_LOGIC;
-        btn0 : IN STD_LOGIC;
-        SEG7_anode : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- anodes of four 7-seg displays
-        SEG7_seg : OUT STD_LOGIC_VECTOR (6 DOWNTO 0)
-    ); 
-END pong;
-
-```
-
-**Modified:**
 
 ```
 ENTITY agario IS
@@ -249,25 +237,9 @@ END agario;
 
 ```
 
-- In the port map the btnu, btnd, and sw are added.
-
-
-**Initial:**
-
-```
-ARCHITECTURE Behavioral OF pong IS
-    SIGNAL pxl_clk : STD_LOGIC := '0'; -- 25 MHz clock to VGA sync module
-    -- internal signals to connect modules
-    SIGNAL S_red, S_green, S_blue : STD_LOGIC; --_VECTOR (3 DOWNTO 0);
-    SIGNAL S_vsync : STD_LOGIC;
-    SIGNAL S_pixel_row, S_pixel_col : STD_LOGIC_VECTOR (10 DOWNTO 0);
-    SIGNAL batpos : STD_LOGIC_VECTOR (10 DOWNTO 0); -- 9 downto 0
-    SIGNAL count : STD_LOGIC_VECTOR (20 DOWNTO 0);
-    SIGNAL display : std_logic_vector (15 DOWNTO 0); -- value to be displayed
-    SIGNAL led_mpx : STD_LOGIC_VECTOR (2 DOWNTO 0); -- 7-seg multiplexing clock
-```
-
-**Modified:**
+- BTNU, BTND, and sw are newly created inputs.
+- BTNU and BTND are used to control the up and down movement of the ball.
+- sw is used to control the conditions involving switch 0 (port J15) on the board.
 
 ```
 ARCHITECTURE Behavioral OF agario IS
@@ -285,26 +257,9 @@ ARCHITECTURE Behavioral OF agario IS
     SIGNAL display2 : STD_LOGIC_VECTOR (7 DOWNTO 0);
     SIGNAL led_mpx : STD_LOGIC_VECTOR (2 DOWNTO 0); -- 7-seg multiplexing clock
 ```
-- Signals for display1 and display2 were added to display the 30 second times and the current score on the board. 
+- Display1 and display2 are newly created signals.
+- Used to display the score and the timer on the board. 
 
-**Initial:**
-
-```
-BEGIN
-    pos : PROCESS (clk_in) is
-    BEGIN
-        if rising_edge(clk_in) then
-            count <= count + 1;
-            IF (btnl = '1' and count = 0 and batpos > 0) THEN
-                batpos <= batpos - 10;
-            ELSIF (btnr = '1' and count = 0 and batpos < 800) THEN
-                batpos <= batpos + 10;
-            END IF;
-        end if;
-    END PROCESS;
-```
-
-**Modified:**
 
 ```
 BEGIN
@@ -326,12 +281,12 @@ BEGIN
     END PROCESS;
 ```
 
-- Adds a series of if else statements to allow the ball to move.
-- To move left if the btnl button is pressed and the x position is greater than 0 it can move left.
-- To move right if the btnr button is pressed and the x position is less than 800 then it can move left.
-- To move up it checks if the btnu button is pushed and the y position is over 0 it can move up.
-- To move down it checks if the btnd putton is pushed and the y position is less than 600 it can move down.
-- If the condition is met it adds or subtracts to the ball's position by 10
+- Adds a series of if else statements to allow the ball to move using the buttons.
+- Moves left if the BTNL button is pressed and the x position is greater than 0.
+- Moves right if the BTNR button is pressed and the x position is less than 800.
+- Moves up if the BTNU button is pressed and the y position is greater than 0.
+- Moves down if the BTND putton is pressed and the y position is less than 600.
+- If the condition is met it adds or subtracts the ball's position by 10.
   
 ### `ball.vhd`
 
@@ -357,6 +312,12 @@ ENTITY ball IS
     );
 END ball;
 ```
+- clk, clk_in, mainball_x, mainball_y, and sw are newly created inputs and score, timer are newly created outputs.
+- clk is the system clock in vector form (created by mapping the count signal from `agario.vhd`.
+- clk_in is the system clock (created by mapping the clk input from `agario.vhd`.
+- mainball_x and mainball_y are the main balls x and y positions (created by mapping ballposx, ballposy from `agario.vhd`.
+- sw is the condition for switch 0 (port J15) (created by mapping sw from `agario.vhd`).
+- score and timer are used to display the score and the timer on the board (created by mapping display2, display1 from `agario.vhd`).
 ```
 ARCHITECTURE Behavioral OF ball IS
     SIGNAL mainbsize : INTEGER := 8; -- main ball size in pixels
@@ -400,8 +361,19 @@ ARCHITECTURE Behavioral OF ball IS
     SIGNAL collision, flag, reset : STD_LOGIC; -- conditions to run certain code at specific times
     -- states for gameplay
     TYPE state IS (ENTER_GAME, SERVE, BALL_COLL, END_GAME); 
-    SIGNAL ps_state, pr_state, nx_state : state; 
+    SIGNAL ps_state, pr_state, nx_state : state;
 ```
+- game_on, balls_on_screen, pos_x, pos_y, ball_x0, ball_y0,..., ball_x12, ball_y12, ball_on, size_change, bsize, counter, clk_div, collision, flag, reset are newly created or modified signals.
+- game_on was modified to test if each individual ball is in play.
+- balls_on_screen is a flag to determine if the balls should appear on the screen.
+- pos_x, pos_y are used in the ball position randomization.
+- ball_x0, ball_y0,..., ball_x12, ball_y12 are used for each ball's x and y positions.
+- ball_on was modified to test if each ball is at the current pixel position.
+- size_change is used to increase or decrease the score.
+- bsize is used to set each ball's size to a default value.
+- counter is used to decrease the timer.
+- clk_div is used to compute the clock speed to determine when counter decreases.
+- collision, flag, reset are used in conditions to run certain code at specific times.
 ```
     red <= NOT (mainball_on OR ball_on(0) OR ball_on(2) OR ball_on(4) OR ball_on(6) OR ball_on(8) OR ball_on(10) OR ball_on(12));
     green <= NOT (ball_on(1) OR ball_on(3) OR ball_on(5) OR ball_on(7) OR ball_on(9) OR ball_on(11));
@@ -409,6 +381,9 @@ ARCHITECTURE Behavioral OF ball IS
     score <= size_change; -- map score onto display
     timer <= counter; -- map timer onto display
 ```
+- Initialize 7 balls to be green and 6 balls to red and the main ball to be blue.
+- Map size_change onto score to display the current score.
+- Map counter onto timer to display the timer.
 ```
 mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
         VARIABLE vx, vy : STD_LOGIC_VECTOR (10 DOWNTO 0); -- 9 downto 0
@@ -430,6 +405,7 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
         END IF;
     END PROCESS;
 ```
+- This process (renamed to mainballdraw) is kept the same from lab 6.
 ```
 -- process to draw each random ball
     randballdraw : PROCESS (ball_x0, ball_x1, ball_x2, ball_x3, ball_x4, ball_x5, ball_x6, ball_x7, ball_x8, ball_y0, ball_y1, ball_y2, ball_y3, ball_y4, ball_y5, ball_y6, ball_y7, ball_y8, pixel_row, pixel_col) IS 
@@ -442,6 +418,8 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
            END IF;
         END IF;
 ```
+- This process was created to draw each individual random ball.
+- The condition shown above is repeated 13 times to draw 13 different balls. 
 ```
     -- process to compute random x and y positions for balls
     -- uses clock to make as random as possible
@@ -456,6 +434,11 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
         pos_y <= CONV_STD_LOGIC_VECTOR(rand_y,11);
     END PROCESS;
 ```
+- Credit: Evade project from Fall 2023. 
+- This process was created to randomize each ball position when they respawn.
+- Created two variables rand_x, rand_y that use the system clock in vector form as an input to randomize positions as much as possible.
+- XORs and mods ensure that the balls are respawned on screen and not in the same position as the main ball.
+- Used the computed random x and y positions in a standard logic that is mapped onto pos_x, pos_y.
 ```
     -- process to convert clock timing so counter only decreases once every second
     PROCESS(clk_in, reset, start_game)
@@ -481,6 +464,11 @@ mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
              END IF; 
     END PROCESS;
 ```
+- This process was created to implement a timer that decreases in 1 second intervals.
+- Takes the system clock, reset flag, and start_game as inputs.
+- Tests if the game is being restarted, and turns on reset as a result.
+- Resets the timer only if reset is 1, then turns reset back to 0.
+- Only runs the counter if flag is 1 (flag becomes 1 if switch 0 is on).
 ```
     -- process to start game (i.e., once every vsync pulse)
     mball : PROCESS
