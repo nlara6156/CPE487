@@ -5,17 +5,17 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 ENTITY ball IS
     PORT (
-        clk : IN STD_LOGIC_VECTOR (20 DOWNTO 0);
-        clk_in : IN STD_LOGIC;
+        clk : IN STD_LOGIC_VECTOR (20 DOWNTO 0); -- system clock in vector form
+        clk_in : IN STD_LOGIC; -- system clock
         v_sync : IN STD_LOGIC;
         pixel_row : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
         pixel_col : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
-        mainball_x : IN STD_LOGIC_VECTOR(10 DOWNTO 0); -- ball x position
-        mainball_y : IN STD_LOGIC_VECTOR(10 DOWNTO 0); -- ball y position
+        mainball_x : IN STD_LOGIC_VECTOR(10 DOWNTO 0); -- main ball x position
+        mainball_y : IN STD_LOGIC_VECTOR(10 DOWNTO 0); -- main ball y position
         start_game : IN STD_LOGIC; -- initiates serve
-        sw : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
-        score : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
-        timer : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
+        sw : IN STD_LOGIC_VECTOR (1 DOWNTO 0); -- condition for switch
+        score : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- display score
+        timer : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- display timer
         red : OUT STD_LOGIC;
         green : OUT STD_LOGIC;
         blue : OUT STD_LOGIC
@@ -23,11 +23,11 @@ ENTITY ball IS
 END ball;
 
 ARCHITECTURE Behavioral OF ball IS
-    SIGNAL mainbsize : INTEGER := 8; -- ball size in pixels
+    SIGNAL mainbsize : INTEGER := 8; -- main ball size in pixels
     SIGNAL mainball_on : STD_LOGIC; -- indicates whether ball is at current pixel position
     SIGNAL game_on : STD_LOGIC_VECTOR (13 DOWNTO 0) := "00000000000000"; -- indicates whether balls are in play
-    SIGNAL balls_on_screen : STD_LOGIC_VECTOR (12 DOWNTO 0):= (OTHERS => '0');
-    SIGNAL pos_x, pos_y : STD_LOGIC_VECTOR (10 DOWNTO 0);
+    SIGNAL balls_on_screen : STD_LOGIC_VECTOR (12 DOWNTO 0):= (OTHERS => '0'); -- indicates whether balls appear on screen
+    SIGNAL pos_x, pos_y : STD_LOGIC_VECTOR (10 DOWNTO 0); -- used for ball position randomization
     -- random balls starting x positions
     SIGNAL ball_x0 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(385, 11);
     SIGNAL ball_x1 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(568, 11);
@@ -57,20 +57,20 @@ ARCHITECTURE Behavioral OF ball IS
     SIGNAL ball_y11 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(540, 11);
     SIGNAL ball_y12 : STD_LOGIC_VECTOR (10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(585, 11);
     SIGNAL ball_on : STD_LOGIC_VECTOR (12 DOWNTO 0) := (OTHERS => '0'); --indicates whether each ball is at current pixel position
-    SIGNAL size_change : STD_LOGIC_VECTOR (7 DOWNTO 0);
-    SIGNAL bsize : INTEGER := 8;
-    SIGNAL counter : STD_LOGIC_VECTOR (7 DOWNTO 0);
-    SIGNAL clk_div : STD_LOGIC_VECTOR (26 DOWNTO 0) := (OTHERS => '0');
-    SIGNAL collision, flag, reset : STD_LOGIC;
-    -- used for making random balls respawn
-    TYPE state IS (ENTER_GAME, SERVE, BALL_COLL, END_GAME);
-    SIGNAL ps_state, pr_state, nx_state : state;
+    SIGNAL size_change : STD_LOGIC_VECTOR (7 DOWNTO 0); -- used to change score
+    SIGNAL bsize : INTEGER := 8; 
+    SIGNAL counter : STD_LOGIC_VECTOR (7 DOWNTO 0); -- used to decrease timer
+    SIGNAL clk_div : STD_LOGIC_VECTOR (26 DOWNTO 0) := (OTHERS => '0'); -- used to compute clock speed
+    SIGNAL collision, flag, reset : STD_LOGIC; -- conditions to run certain code at specific times
+    -- states for gameplay
+    TYPE state IS (ENTER_GAME, SERVE, BALL_COLL, END_GAME); 
+    SIGNAL ps_state, pr_state, nx_state : state; 
 BEGIN
     red <= NOT (mainball_on OR ball_on(0) OR ball_on(2) OR ball_on(4) OR ball_on(6) OR ball_on(8) OR ball_on(10) OR ball_on(12));
     green <= NOT (ball_on(1) OR ball_on(3) OR ball_on(5) OR ball_on(7) OR ball_on(9) OR ball_on(11));
     blue <= NOT (ball_on(0) OR ball_on(1) OR ball_on(2) OR ball_on(3) OR ball_on(4) OR ball_on(5) OR ball_on(6) OR ball_on(7) OR ball_on(8) OR ball_on(9) OR ball_on(10) OR ball_on(11) OR ball_on(12));
-    score <= size_change;
-    timer <= counter;
+    score <= size_change; -- map score onto display
+    timer <= counter; -- map timer onto display
     -- process to draw main ball
     mainballdraw : PROCESS (mainball_x, mainball_y, pixel_row, pixel_col) IS
         VARIABLE vx, vy : STD_LOGIC_VECTOR (10 DOWNTO 0); -- 9 downto 0
@@ -191,12 +191,13 @@ BEGIN
     mball : PROCESS
     BEGIN
         WAIT UNTIL rising_edge(v_sync);
+        -- FSM for gameplay
         pr_state <= nx_state;
         CASE pr_state IS 
-            WHEN SERVE => 
+            WHEN SERVE => -- initializes/restarts game
                 IF start_game = '1' THEN -- test for btn0 being pressed
                     game_on(0) <= '0'; -- remove main ball (if game is being restarted)
-                    -- initalize random balls
+                    -- initalize random ball positions
                     ball_x0 <= CONV_STD_LOGIC_VECTOR(385, 11); 
                     ball_x1 <= CONV_STD_LOGIC_VECTOR(568, 11); 
                     ball_x2 <= CONV_STD_LOGIC_VECTOR(10, 11);  
@@ -223,17 +224,17 @@ BEGIN
                     ball_y10 <= CONV_STD_LOGIC_VECTOR(495, 11);
                     ball_y11 <= CONV_STD_LOGIC_VECTOR(540, 11);
                     ball_y12 <= CONV_STD_LOGIC_VECTOR(585, 11);
-                    IF game_on(0) = '0' THEN
+                    IF game_on(0) = '0' THEN -- if game is restarted
                        game_on(0) <= '1'; -- put main ball on screen
                        mainbsize <= 8; -- reset ball to original size
                     END IF;
                     IF sw(0) = '1' THEN -- if switch 0 is on
-                       flag <= '1';
+                       flag <= '1'; -- set flag to determine whether timer runs
                     ELSE
                        flag <= '0';
                     END IF;
                     size_change <= "00000000"; -- reset score
-                    nx_state <= ENTER_GAME;
+                    nx_state <= ENTER_GAME; -- continue to next state
                 -- condition to allow balls to reappear after disappearing
                 ELSIF (game_on(0) = '1' AND game_on(1) = '1' AND game_on(2) = '1' AND game_on(3) = '1' AND game_on(4) = '1' AND game_on(5) ='1' AND game_on(6) ='1' AND game_on(7) ='1' AND game_on(8) ='1' AND game_on(9) ='1') THEN
                     balls_on_screen(0) <= '1';
@@ -251,9 +252,9 @@ BEGIN
                     balls_on_screen(12) <= '1';
                     nx_state <= BALL_COLL;
                 ELSE
-                    nx_state <= ENTER_GAME;
+                    nx_state <= ENTER_GAME; -- if balls are not in play, continue to this state to put them in play
                 END IF;
-             -- conditions to initialize balls in starting positions
+             -- conditions to put balls in play and make them appear on screen
              IF (game_on(1) = '0' AND balls_on_screen(0) = '0' AND ps_state = BALL_COLL) THEN
                     game_on(1) <= '1';
                     balls_on_screen(0) <= '1';
@@ -319,7 +320,7 @@ BEGIN
                  balls_on_screen(12) <= '1';
                  nx_state <= BALL_COLL;
              END IF;
-         WHEN ENTER_GAME =>
+         WHEN ENTER_GAME => -- state to ensure balls are put into play 
              IF start_game = '0' THEN
                  game_on(1) <= '1';
                  game_on(2) <= '1';
@@ -334,24 +335,24 @@ BEGIN
                  game_on(11) <= '1';
                  game_on(12) <= '1';
                  game_on(13) <= '1';
-                 nx_state <= SERVE;
+                 nx_state <= SERVE; -- goes back to first state to test conditions again
              ELSE 
-                 nx_state <= ENTER_GAME;
+                 nx_state <= ENTER_GAME; -- returns to this state until balls are in play
              END IF;
-         WHEN BALL_COLL =>
+         WHEN BALL_COLL => 
          -- conditions to test for main ball collision with other balls
-             IF collision = '0' THEN
+             IF collision = '0' THEN -- flag to ensure collision is always tested
                  IF (mainball_x + mainbsize/2) >= (ball_x0 - bsize/2) AND
                     (mainball_x - mainbsize/2) <= (ball_x0 + bsize/2) AND
                     (mainball_y + mainbsize/2) >= (ball_y0 - bsize/2) AND
                     (mainball_y - mainbsize/2) <= (ball_y0 + bsize/2) THEN
-                         balls_on_screen(0) <= '0';
-                         collision <= '1';
-                         mainbsize <= mainbsize + 3;
-                         size_change <= size_change + 1;
-                         game_on(1) <= '0';
-                         ps_state <= pr_state;
-                         nx_state <= SERVE;
+                         balls_on_screen(0) <= '0'; -- remove ball from screen
+                         collision <= '1'; -- switch flag
+                         mainbsize <= mainbsize + 3; -- increase ball size
+                         size_change <= size_change + 1; -- increase score
+                         game_on(1) <= '0'; -- take ball out of play
+                         ps_state <= pr_state; 
+                         nx_state <= SERVE; -- return to first state
                  ELSIF (mainball_x + mainbsize/2) >= (ball_x1 - bsize/2) AND
                        (mainball_x - mainbsize/2) <= (ball_x1 + bsize/2) AND
                        (mainball_y + mainbsize/2) >= (ball_y1 - bsize/2) AND
@@ -487,7 +488,7 @@ BEGIN
                  END IF;
              END IF;
              IF nx_state = SERVE THEN
-                    collision <= '0';
+                    collision <= '0'; -- switch flag back so collision is continuously tested
              END IF;
              -- change ball position after collision
              IF game_on(1) = '0' THEN
@@ -538,8 +539,9 @@ BEGIN
             nx_state <= SERVE;
          END IF;
           WHEN END_GAME =>
-             balls_on_screen <= "0000000000000";
-             game_on(1) <= '0';
+             balls_on_screen <= "0000000000000"; -- turn off all balls except main ball
+             -- take balls out of play
+             game_on(1) <= '0'; 
              game_on(2) <= '0';
              game_on(3) <= '0';
              game_on(4) <= '0';
@@ -552,8 +554,8 @@ BEGIN
              game_on(11) <= '0';
              game_on(12) <= '0';
              game_on(13) <= '0';
-             IF start_game = '1' THEN
-                nx_state <= ENTER_GAME;
+             IF start_game = '1' THEN -- reset game
+                nx_state <= ENTER_GAME; 
              END IF;
        END CASE;
     END PROCESS;
@@ -571,6 +573,7 @@ BEGIN
         pos_y <= CONV_STD_LOGIC_VECTOR(rand_y,11);
     END PROCESS;
     
+    -- process to convert clock timing so counter only decreases once every second
     PROCESS(clk_in, reset, start_game)
         BEGIN
              IF start_game = '1' THEN
