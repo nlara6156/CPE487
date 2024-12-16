@@ -42,6 +42,53 @@ Once downloaded, follow these steps:
 9. Push the BTNC button to start the game
 
 ## Inputs and Outputs
+
+```
+ENTITY agario IS
+
+    PORT (
+
+        clk_in : IN STD_LOGIC; -- system clock
+
+        VGA_red : OUT STD_LOGIC_VECTOR (3 DOWNTO 0); -- VGA outputs
+
+        VGA_green : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+
+        VGA_blue : OUT STD_LOGIC_VECTOR (3 DOWNTO 0);
+
+        VGA_hsync : OUT STD_LOGIC;
+
+        VGA_vsync : OUT STD_LOGIC;
+
+        btnl : IN STD_LOGIC;
+
+        btnr : IN STD_LOGIC;
+
+        btnd : IN STD_LOGIC;
+
+        btnu : IN STD_LOGIC;
+
+        btn0 : IN STD_LOGIC;
+
+        SEG7_anode : OUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- anodes of four 7-seg displays
+
+        SEG7_seg : OUT STD_LOGIC_VECTOR (6 DOWNTO 0)
+
+    );
+
+END agario;
+```
+
+- clk_in : This input is the system clock
+- VGA_red, VGA_green, VGA_blue, VGA_hsync, VGA_vsync: These are the outputes to display the code and color
+- BTNL: This input corresponds to the button on the left so that the ball can move left (Input port P17)
+- BTNR: This input corresponds to the button on the right so that the ball can move right (Input port M17)
+- BTND: This input corresponds to the bottom button so that the ball can move down (Input port P18)
+- BTNU: This input corresponds to the top button so that the ball can move up (Input port M18)
+- BTN0: This input corresponds to the middle button so that the game can start (Input port N17)
+- SEG7_anode: This output corresponds to the 8 different LED segments that will be lit up
+- SEG7_seg: This output determines what will be displayed on each anode 
+
 ## Modifications
 
 ### `agario.xdc`
