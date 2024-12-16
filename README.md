@@ -24,3 +24,25 @@ Download the following files from this repository onto your computer
 - `agario.vhd`
 
 Once downloaded, follow these steps:
+1. Create a new project on Vivado
+2. Add all the `.vhd` files as source files to the project
+3. Add the `.xdc` file as a constraint file to the project
+4. Choose Nexys A7-100T board for the project
+5. Run the synthesis
+6. Run the implementation
+7. Generate the bistream
+8. Open the hardware manager and click
+   - 'Open Target'
+   - 'Auto Connect'
+   - 'Program Device'
+9. Push the BTNC button to start the game
+
+## Inputs and Outputs
+## Modifications
+## Process Summary 
+Components:
+
+Rebecca Kaspar:
+- Contributed to GitHub repository
+Nadia Lara:
+- Contributed to GitHub repository
