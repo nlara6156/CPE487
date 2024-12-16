@@ -333,6 +333,8 @@ BEGIN
   
 ### `ball.vhd`
 
+_This code originated from the bat_n_ball.vhd file in Lab 6_
+
 **Initial:**
 
 ```
