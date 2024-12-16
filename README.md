@@ -1,7 +1,9 @@
 # CPE487_Final_Project - Agar.io Game 
 ## Description
 In the game agario, you control a main ball and move over the other balls on the screen. Each of the other balls could either increase or decrease your overall score. 
+
 Goal: Grow your main ball size. 
+
 Playing: 
   - Use BTNC to start the game.
   - Use BTNU to move up, BTND to move down, BTNR to move right, and BTNL to move left.
