@@ -314,6 +314,12 @@ BEGIN
     END PROCESS;
 ```
 
+- Adds a series of if else statements to allow the ball to move.
+- To move left if the btnl button is pressed and the x position is greater than 0 it can move left.
+- To move right if the btnr button is pressed and the x position is less than 800 then it can move left.
+- To move up it checks if the btnu button is pushed and the y position is over 0 it can move up.
+- To move down it checks if the btnd putton is pushed and the y position is less than 600 it can move down.
+  
 ### `ball.vhd`
 
 **Initial:**
