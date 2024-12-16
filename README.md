@@ -669,11 +669,12 @@ Nadia Lara:
   
 
 - Having the main ball increase when coming in contact with the other balls
-    - The main ball score will not increase if not completely hovering the other ball
+- The main ball score will not increase if not completely hovering the other ball
  
 ### Improvements
 
-- Incorporating a colored screen that displays on the screen when you win or lose. Ideally a green screen when you win and a red screen when you lose. 
+- Incorporating a colored screen that displays on the screen when you win or lose. Ideally a green screen when you win and a red screen when you lose.
+- Make each of the random balls different sizes and have the larger balls count for more points. 
 
 ### Timeline
 
