@@ -237,7 +237,7 @@ END agario;
 
 ```
 
--
+- In the port map the btnu, btnd, and sw are added.
 
 
 **Initial:**
@@ -273,7 +273,7 @@ ARCHITECTURE Behavioral OF agario IS
     SIGNAL display2 : STD_LOGIC_VECTOR (7 DOWNTO 0);
     SIGNAL led_mpx : STD_LOGIC_VECTOR (2 DOWNTO 0); -- 7-seg multiplexing clock
 ```
--
+- Signals for display1 and display2 were added to display the 30 second times and the current score on the board. 
 
 **Initial:**
 
@@ -381,6 +381,9 @@ BEGIN
     TYPE state IS (ENTER_GAME, SERVE, BALL_COLL, END_GAME);
     SIGNAL ps_state, pr_state, nx_state : state;
 ```
+
+**Initial:**
+**Modified:**
 
 ## Process Summary 
 
