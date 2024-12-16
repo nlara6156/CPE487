@@ -42,7 +42,7 @@ Once downloaded, follow these steps:
 9. Push the BTNC button to start the game
 
 ## Inputs and Outputs
-
+Inputs and Outputs in top level file `agario.vhd`
 ```
 ENTITY agario IS
 
