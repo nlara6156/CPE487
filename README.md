@@ -1,14 +1,22 @@
 # CPE487_Final_Project - Agar.io Game 
 ## Description
-In the game agario, you control a main ball and move over the other balls on the screen. Each of the other balls could either increase or decrease your overall score. 
+In our Agar.io-based game, you control a main ball to collide with random balls on the screen.
 
-Goal: Grow your main ball size. 
+Green balls increase the size of your ball and your score, red balls decrease the size of your ball and your score.
+
+Two gamemodes:
+ - If the switch is turned off, the game is set to a traditional gamemode where you can indefinitely grow and shrink your ball.
+ - If the switch is turned on, the game is set to the timer gamemode where you have 30 seconds to grow your ball.
+
+If your ball size exceeds a certain threshold, you win the game.
+
+If your ball falls below a certain threshold, you lose the game.
+
+If you fail to grow your ball above the threshold within the 30 second time limit, you lose the game.
 
 Playing: 
   - Use BTNC to start the game.
   - Use BTNU to move up, BTND to move down, BTNR to move right, and BTNL to move left.
-    
-Scoring: When the ball has reached a certain size the game will end.
 
 ## Required Attachments
 For game play, you will need the following
@@ -736,7 +744,6 @@ Nadia Lara:
 	- Create clock conversion process
 	- Create separate displays for the score and the timer
 	- Implement timer and switch logic
-	- Conclude FSM Logic
 	- Create GitHub repository
 	- Create presentation
 	- Conclude FSM logic
