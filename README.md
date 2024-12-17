@@ -695,12 +695,15 @@ WHEN END_GAME =>
 
 ### Responsibilities
 Rebecca Kaspar:
+- Created the randomization process
+- Created the clock conversion process
+- Created the FSM 
 - Contributed to GitHub repository
-- Added the small ball randomization
 
 Nadia Lara:
+- Contributed to the FSM by creating the score counter
+- Contributed to the ball respawn logic
 - Contributed to GitHub repository
-- Added score counter 
 
 ### Difficulties
 - Determing how to implement the game
