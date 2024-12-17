@@ -48,8 +48,6 @@ Download the following files from this repository onto your computer
 - `agario.xdc`
 - `agario.vhd`
 
-### Module Hierarchy
-![Module Hierarchy](https://github.com/user-attachments/assets/88511ae5-e2a5-46f7-967d-9ba096ce795e) 
 Once downloaded, follow these steps:
 1. Create a new project on Vivado
 2. Add all the `.vhd` files as source files to the project
@@ -64,6 +62,9 @@ Once downloaded, follow these steps:
    - 'Program Device'
      
 9. Push the BTNC button to start the game
+
+## Module Hierarchy
+![Module Hierarchy](https://github.com/user-attachments/assets/88511ae5-e2a5-46f7-967d-9ba096ce795e) 
 
 ## Inputs and Outputs
 ### `agario.vhd`
