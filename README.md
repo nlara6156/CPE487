@@ -705,11 +705,13 @@ Nadia Lara:
 
 ### Difficulties
 
-- Generating multiple balls in 'random' places
-  
+- Creating the FSM
+	- The FSM took the most time to implement. It required lots of testing and going back and forth between processes to ensure that everything ran smoothly.
+- The clock conversion process
+	- Since we wanted a real-time countdown timer, we had to create a process to only decrement the timer when the system clock runs for a certain amount of time. This took a while to figure out but we eventually got it to work.
+- The collision algorithm
+	- When the main ball comes in contact with the random balls, there are times where the collision doesn't register. We were unable to perfect this, but it works most of the time.
 
-- Having the main ball increase when coming in contact with the other balls
-- The main ball score will not increase if not completely hovering the other ball
  
 ### Improvements
 
