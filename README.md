@@ -28,7 +28,7 @@ Playing:
 For game play, you will need the following
 - Nexys A7-100T Board
   
-![Nexys Board](Images/NexysA7.jpg)
+<img width="494" alt="board" src="https://github.com/user-attachments/assets/c7888f9a-e63d-4dce-bc76-ad6d17713b93" />
 
 - VGA to HDMI Adapter
   
@@ -36,7 +36,7 @@ For game play, you will need the following
 
 - Monitor
   
-![Monitor](Images/TV_image.jpg)
+![TV_image](https://github.com/user-attachments/assets/19bea526-1a89-4544-bbc9-4834cb38323b)
 
 ## Steps to Run
 Download the following files from this repository onto your computer
