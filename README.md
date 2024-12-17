@@ -19,16 +19,19 @@ Playing:
   - Use BTNU to move up, BTND to move down, BTNR to move right, and BTNL to move left.
 
 ### Traditional Gameplay Win
-![win](https://github.com/nlara6156/CPE487_Final_Project/blob/main/traditional_gameplay_win.gif)
+<img src="https://github.com/nlara6156/CPE487_Final_Project/blob/main/traditional_gameplay_win.gif" width=50% height=50%>
+
 ### Traditional Gameplay Lose
-![lose](https://github.com/nlara6156/CPE487_Final_Project/blob/main/traditional_gameplay_lose.gif)
+<img src="https://github.com/nlara6156/CPE487_Final_Project/blob/main/traditional_gameplay_lose.gif" width=50% height=50%>
+
 ### Counter Ending Game
-![count](https://github.com/nlara6156/CPE487_Final_Project/blob/main/counter_end_game.gif)
+<img src="https://github.com/nlara6156/CPE487_Final_Project/blob/main/counter_end_game.gif" width=50% height=50%>
+
 ## Required Attachments
 For game play, you will need the following
 - Nexys A7-100T Board
   
-<img width="475" alt="board" src="https://github.com/user-attachments/assets/6663cbe9-f714-4d1b-9d0d-207632e284ee" />
+<img src="https://github.com/user-attachments/assets/6663cbe9-f714-4d1b-9d0d-207632e284ee" width=50% height=50%>
 
 - VGA to HDMI Adapter
   
@@ -36,7 +39,7 @@ For game play, you will need the following
 
 - Monitor
   
-![TV_image](https://github.com/user-attachments/assets/19bea526-1a89-4544-bbc9-4834cb38323b)
+<img src="https://github.com/user-attachments/assets/19bea526-1a89-4544-bbc9-4834cb38323b" width=50% height=50%>
 
 ## Steps to Run
 Download the following files from this repository onto your computer
@@ -703,7 +706,7 @@ WHEN END_GAME =>
 ![ball_processes](https://github.com/user-attachments/assets/72a5a75a-0cf2-4a1c-bb53-5905373dfd02)
 
 ### FSM Logic Diagram
-![FSM_Logic](https://github.com/user-attachments/assets/7e92f929-6c32-408a-be0c-cad1c5bdae4d)
+<img src="https://github.com/user-attachments/assets/7e92f929-6c32-408a-be0c-cad1c5bdae4d" width=75% height=75%>
 
 ### `vga_sync.vhd` Processes
 ![vga_process](https://github.com/user-attachments/assets/06f91b93-181d-4b9c-90ca-5ed2dc8defb3)
