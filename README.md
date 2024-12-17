@@ -694,7 +694,6 @@ WHEN END_GAME =>
 ![vga_process](https://github.com/user-attachments/assets/06f91b93-181d-4b9c-90ca-5ed2dc8defb3)
 
 ### Responsibilities
-
 Rebecca Kaspar:
 - Contributed to GitHub repository
 - Added the small ball randomization
@@ -704,7 +703,10 @@ Nadia Lara:
 - Added score counter 
 
 ### Difficulties
-
+- Determing how to implement the game
+	- We were unsure what logic to use to create the game.
+	- We originally just created a bunch of if else statements, but this did not work.
+	- After some messing around with the program, we ultimately decided that the FSM was the most logical approach for the process we were trying to implement.
 - Creating the FSM
 	- The FSM took the most time to implement. It required lots of testing and going back and forth between processes to ensure that everything ran smoothly.
 - The clock conversion process
@@ -714,10 +716,27 @@ Nadia Lara:
 
  
 ### Improvements
-
-- Incorporating a colored screen that displays on the screen when you win or lose. Ideally a green screen when you win and a red screen when you lose.
-- Make each of the random balls different sizes and have the larger balls count for more points. 
+- Creating something to differentiate winning vs. losing the game.
+	- Displaying the words "WIN" or "LOSE" on the board.
+	- Changing the colors of the screen (green for win, red for lose).
+- Make each of the random balls different sizes and have the larger balls count for more points.
+- Create the random balls using an array rather than separate initializations for each ball.
 
 ### Timeline
-
-The project was completed in the last week with equal work being done by both parties. 
+- Friday 12/14:
+	- Initialize files
+	- Create new inputs, outputs, signals, etc.
+	- Create ball randomization process
+	- Create score counter
+	- Begin FSM logic
+- Saturday 12/15:
+	- Create clock conversion process
+	- Create separate displays for the score and the timer
+	- Implement timer and switch logic
+	- Conclude FSM Logic
+	- Create GitHub repository
+	- Create presentation
+	- Conclude FSM logic
+- Sunday 12/16:
+	- Presentation
+	- Conclude GitHub repository
