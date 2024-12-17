@@ -52,7 +52,7 @@ Once downloaded, follow these steps:
 9. Push the BTNC button to start the game
 
 ## Inputs and Outputs
-### Inputs and Outputs in top level file `agario.vhd`
+### `agario.vhd`
 ```
 ENTITY agario IS
     PORT (
@@ -85,7 +85,7 @@ END agario
 - SEG7_seg: Determines what will be displayed on each anode
 - VGA_red, VGA_green, VGA_blue, VGA_hsync, VGA_vsync: Display the code and color on monitor
 
-### Inputs and Outputs in `ball.vhd`
+### `ball.vhd`
 ```
 ENTITY ball IS
     PORT (
@@ -118,7 +118,7 @@ END ball;
 - score, timer: Mapped onto display to show the score and countdown timer on the board
 - red, green, blue: Colors to display on the monitor
 
-### Inputs and Outputs in `leddec16.vhd`
+### `leddec16.vhd`
 ```
 ENTITY leddec16 IS
 	PORT (
@@ -148,6 +148,7 @@ BEGIN
 	         data1(3 DOWNTO 0) WHEN dig = "110" ELSE -- digit 2
 	         data1(7 DOWNTO 4) WHEN dig = "111"; -- digit 3
 ```
+- data1 and data2 represent two different datasets to display on the board.
 ```
 anode <= "11111110" WHEN dig = "000" ELSE -- 0
          "11111101" WHEN dig = "001" ELSE -- 1
@@ -159,6 +160,7 @@ anode <= "11111110" WHEN dig = "000" ELSE -- 0
          "01111111" WHEN dig = "111" ELSE -- 7
          "11111111";
 ```
+- Certain anodes are commented out so only the first 2 and last 2 anodes are lit up on the board.
 ### `agario.xdc`
 _This code originated from the `pong.xdc` file in Lab 6_
 
@@ -681,6 +683,15 @@ WHEN END_GAME =>
 
 ### FSM Logic Diagram
 ![FSM_Logic](https://github.com/user-attachments/assets/7e92f929-6c32-408a-be0c-cad1c5bdae4d)
+
+### `agario.vhd` Processes
+![agario_processes](https://github.com/user-attachments/assets/a5c5af81-52bf-4d2a-af0f-6169442e358a)
+
+### `ball.vhd` Processes
+![ball_processes](https://github.com/user-attachments/assets/72a5a75a-0cf2-4a1c-bb53-5905373dfd02)
+
+### `vga_sync.vhd` Processes
+![vga_process](https://github.com/user-attachments/assets/06f91b93-181d-4b9c-90ca-5ed2dc8defb3)
 
 ### Responsibilities
 
