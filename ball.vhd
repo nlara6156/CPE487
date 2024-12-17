@@ -93,7 +93,7 @@ BEGIN
     END PROCESS;
     
     -- process to draw each random ball
-    randballdraw : PROCESS (ball_x0, ball_x1, ball_x2, ball_x3, ball_x4, ball_x5, ball_x6, ball_x7, ball_x8, ball_y0, ball_y1, ball_y2, ball_y3, ball_y4, ball_y5, ball_y6, ball_y7, ball_y8, pixel_row, pixel_col) IS 
+    randballdraw : PROCESS (ball_x0, ball_x1, ball_x2, ball_x3, ball_x4, ball_x5, ball_x6, ball_x7, ball_x8, ball_x9, ball_x10, ball_x11, ball_x12, ball_y0, ball_y1, ball_y2, ball_y3, ball_y4, ball_y5, ball_y6, ball_y7, ball_y8, ball_y9, ball_y10, ball_y11, ball_y12, pixel_row, pixel_col) IS 
     BEGIN
         IF balls_on_screen(0) = '1' THEN
            IF ((CONV_INTEGER(pixel_col) - CONV_INTEGER(ball_x0))**2 + (CONV_INTEGER(pixel_row) - CONV_INTEGER(ball_y0))**2) <= (bsize*bsize) THEN
@@ -236,7 +236,7 @@ BEGIN
                     size_change <= "00000000"; -- reset score
                     nx_state <= ENTER_GAME; -- continue to next state
                 -- condition to allow balls to reappear after disappearing
-                ELSIF (game_on(0) = '1' AND game_on(1) = '1' AND game_on(2) = '1' AND game_on(3) = '1' AND game_on(4) = '1' AND game_on(5) ='1' AND game_on(6) ='1' AND game_on(7) ='1' AND game_on(8) ='1' AND game_on(9) ='1') THEN
+                ELSIF (game_on(0) = '1' AND game_on(1) = '1' AND game_on(2) = '1' AND game_on(3) = '1' AND game_on(4) = '1' AND game_on(5) ='1' AND game_on(6) ='1' AND game_on(7) ='1' AND game_on(8) ='1' AND game_on(9) ='1' AND game_on(10) ='1' AND game_on(11) ='1' AND game_on(12) ='1' AND game_on(13) ='1') THEN
                     balls_on_screen(0) <= '1';
                     balls_on_screen(1) <= '1';
                     balls_on_screen(2) <= '1';
