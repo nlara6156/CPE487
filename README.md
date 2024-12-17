@@ -18,6 +18,12 @@ Playing:
   - Use BTNC to start the game.
   - Use BTNU to move up, BTND to move down, BTNR to move right, and BTNL to move left.
 
+### Traditional Gameplay Win
+![win](https://github.com/nlara6156/CPE487_Final_Project/blob/main/traditional_gameplay_win.gif)
+### Traditional Gameplay Lose
+![lose](https://github.com/nlara6156/CPE487_Final_Project/blob/main/traditional_gameplay_lose.gif)
+### Counter Ending Game
+![count](https://github.com/nlara6156/CPE487_Final_Project/blob/main/counter_end_game.gif)
 ## Required Attachments
 For game play, you will need the following
 - Nexys A7-100T Board
