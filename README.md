@@ -681,14 +681,14 @@ WHEN END_GAME =>
 - Condition tests if the BTNC button is being pressed (the game is being reset) and sets the next state to ENTER_GAME if true. 
 ## Process Summary 
 
-### FSM Logic Diagram
-![FSM_Logic](https://github.com/user-attachments/assets/7e92f929-6c32-408a-be0c-cad1c5bdae4d)
-
 ### `agario.vhd` Processes
 ![agario_processes](https://github.com/user-attachments/assets/a5c5af81-52bf-4d2a-af0f-6169442e358a)
 
 ### `ball.vhd` Processes
 ![ball_processes](https://github.com/user-attachments/assets/72a5a75a-0cf2-4a1c-bb53-5905373dfd02)
+
+### FSM Logic Diagram
+![FSM_Logic](https://github.com/user-attachments/assets/7e92f929-6c32-408a-be0c-cad1c5bdae4d)
 
 ### `vga_sync.vhd` Processes
 ![vga_process](https://github.com/user-attachments/assets/06f91b93-181d-4b9c-90ca-5ed2dc8defb3)
